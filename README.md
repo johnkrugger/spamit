@@ -2,6 +2,7 @@
 Just some simple emailing script
 
 # How to use
+{{{#!highlight python
 import spamit
 
 myserver = spamit.MailServer('mail.example.com', 'no-reply@example.com')
@@ -11,5 +12,5 @@ for spamlist in spamit.Dataset('database.example.com', 'dbname', 'user', 'passwo
 
 for spamlist in spamit.EmailFile('list.txt'):
     myserver.spam(spamlist, u'Title', message, None)
-
     
+}}}
