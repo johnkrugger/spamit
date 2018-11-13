@@ -11,6 +11,6 @@ for spamlist in spamit.Dataset('database.example.com', 'dbname', 'user', 'passwo
     myserver.spam(spamlist, u'Title', 'message', None)
 
 for spamlist in spamit.EmailFile('list.txt'):
-    myserver.spam(spamlist, u'Title', message, None)
+    myserver.spam(spamlist, u'Title', 'message', None)
     
 ```
