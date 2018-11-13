@@ -12,9 +12,11 @@ import email.header
 import psycopg2
 import psycopg2.extras
 
+import re
+
 
 # MIME capable mail server object
-class Mailserver(object):
+class MailServer(object):
 
     def __init__(self, servername, emailaddress):
         self.server = smtplib.SMTP()
@@ -65,3 +67,40 @@ class Dataset(object):
 
     def next(self):
         return self.__next__()
+
+
+# File containing destination emails
+class EmailFile(object):
+
+    def __init__(self,filename):        
+
+        self.position = 0
+        self.step = 100
+        self.emaillist = list()
+
+        email_regex = re.compile('[^@]+@[^@]+\.[^@]+')
+
+        with open(filename,'r') as emails:
+            for email in emails:
+                cleanemail = email.strip()
+
+                if len(cleanemail) > 0:
+                    if not email_regex.match(cleanemail):
+                        raise ValueError('Bad email address ' + cleanemail)
+                    else:
+                        self.emaillist.append(cleanemail)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.position > len(self.emaillist):
+            raise StopIteration
+
+        sliced = self.emaillist[self.position:self.position+self.step]
+        self.position += self.step
+        return sliced
+
+    def next(self):
+        return self.__next__()
+
